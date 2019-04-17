@@ -215,9 +215,9 @@ class outlook:
 					receiver = str(message2.To)
 					cc = message2.Cc
 					subject = str(message2.Subject)
-					#print(subject)
+					print('Subject ',subject)
 					body = str(message2.Body)
-					#print(body)
+					print('Body ',body)
 					if (message2.Unread == True) :
 					#if (1==1):
 						
@@ -352,7 +352,8 @@ chrome()
 while True:
 	time.sleep(5)
 	#if __name__ == '__main__':
-	a=outlook(9)
+	a=outlook("inbox")
+	#a=outlook(18)
 	try:
 		a.mail_read()
 	except Exception as e:
