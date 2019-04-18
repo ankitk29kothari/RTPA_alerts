@@ -25,8 +25,7 @@ import datetime
 import time
 
 
-name='kirti'
-print(name)
+#this is causing error
 
 class outlook:
 
