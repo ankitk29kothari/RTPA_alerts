@@ -57,7 +57,7 @@ class outlook:
 		global rtpa_type
 		
 		values1_dict={'AP':'Wireless','WLC':'Wireless','SWITCH':'LAN','LAN':'LAN','IP':'WAN','STEELHEAD':"WAN Optimization",'Riverbed':'WAN Optimization','LINK':'WAN','Perofrmance':'Performance Issue','Bandwidth':'WAN'
-		               ,'CALLS':'WAN'}
+		               ,'CALLS':'WAN','DATA ':'WAN'}
 		values2_dict={'low':'Yellow','Medium':'Orange','High':'Red'}
 
 
