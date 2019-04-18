@@ -1,9 +1,10 @@
 from pip import install_import
 install_import('win32com.client','pypiwin32')
-
+# Reading files of outllok
 
 from pip import install_import
 install_import('selenium','selenium')
+#Web browser automation
 
 from pip import install_import
 install_import('pandas','pandas')
@@ -25,7 +26,7 @@ import datetime
 import time
 
 
-
+#===============================================================================
 
 class outlook:
 
@@ -55,7 +56,8 @@ class outlook:
 		global layer
 		global rtpa_type
 		
-		values1_dict={'AP':'Wireless','WLC':'Wireless','SWITCH':'LAN','LAN':'LAN','IP':'WAN','STEELHEAD':"WAN Optimization",'Riverbed':'WAN Optimization','LINK':'WAN','Perofrmance':'Performance Issue','Bandwidth':'WAN'}
+		values1_dict={'AP':'Wireless','WLC':'Wireless','SWITCH':'LAN','LAN':'LAN','IP':'WAN','STEELHEAD':"WAN Optimization",'Riverbed':'WAN Optimization','LINK':'WAN','Perofrmance':'Performance Issue','Bandwidth':'WAN'
+		               ,'CALLS':'WAN'}
 		values2_dict={'low':'Yellow','Medium':'Orange','High':'Red'}
 
 
@@ -115,7 +117,7 @@ class outlook:
 				print ('Submit Sucess')
 				return ("Submit")
 			else:
-				self.logs(status,incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step,"unable to detect Submit button")
+				self.logs('update',incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step,"unable to detect Submit button")
 
 
 
@@ -141,7 +143,7 @@ class outlook:
 				print ('Submit Sucess')
 				return ("Submit")
 			else:
-				self.logs(status,incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step,"unable to detect Submit button")
+				self.logs('finished',incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step,"unable to detect Submit button")
 
 
 
@@ -153,6 +155,15 @@ class outlook:
 		if incident_no in html_source:
 			print('Duplicate')
 			return ("Duplicate")
+		driver.get("https://tt-gateway5.orange-business.com/serviceApi/qa/history.html")
+		time.sleep(5)
+		html_source = driver.page_source
+		if incident_no in html_source:
+			print('Duplicate')
+			return ("Duplicate")
+
+
+
 		driver.get("https://tt-gateway5.orange-business.com/serviceApi/qa/index.html")
 		WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, '//*[@data-ng-options="rtpaService as rtpaService.serviceName for rtpaService in rtpaServiceList track by rtpaService.serviceId"]')))
 		time.sleep(4)
@@ -191,7 +202,7 @@ class outlook:
 			print ('Submit Sucess')
 			return ("Submit")
 		else:
-			self.logs(status,incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step,"unable to detect Submit button")
+			self.logs('new',incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step,"unable to detect Submit button")
 
 
 	
@@ -269,7 +280,7 @@ class outlook:
 						country=self.country(country)
 						#print('Country - ',country)
 						check=" "
-						message2.Unread = False
+						
 
 
 						try:
@@ -277,31 +288,56 @@ class outlook:
 						except:
 							pass
 
+							
+
 
 						if (status=='new') and (rtpa_type !='Yellow'):
 							
 							check=self.rtpa_new(incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step)
+							message2.Unread =False
 							if (check == "Submit") or (check=='Duplicate'):
 								message2.Categories = 'Green Category'
 								message2.Save()
+							
 								
 								self.logs(status,incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step,check)
 
-						elif (status=='updated'):
+						# Temporary
+
+						elif (status=='new') and (rtpa_type =='Yellow'):
+							check=self.rtpa_new(incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step)
+							message2.Unread =False
+
+							if (check == "Submit"):
+								self.logs(status,incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step,check)
+								message2.Categories = 'Purple Category'
+								message2.Save()
+								check=self.rtpa_finished(incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step)
+								if (check == "Submit"):
+									self.logs(status,incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step,check)
+						
+
+						elif (status=='updated') or (status=='downgrade') or (status=='upgrade') :
 							check=self.rtpa_updated(incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step)
+							message2.Unread = False
 							if (check == "Submit"):
 								message2.Categories = 'Yellow Category'
 								message2.Save()
+							
 								
 								self.logs(status,incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step,check)
 
 						elif (status=='finished'):
 							check=self.rtpa_finished(incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step)
+							message2.Unread = False
 							if (check == "Submit"):
 								message2.Categories = 'Blue Category'
 								message2.Save()
-								
 								self.logs(status,incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step,check)
+						
+
+
+
 
 						
 
@@ -348,7 +384,9 @@ def chrome():
 
 
 
-
+#========================================================
+#========================================================
+#Calling clases & fntn
 
 
 
@@ -364,11 +402,14 @@ while True:
 	# In outlook create gsk.rtpa folder and make rule to move mail from gsk to this folder.
 	try:
 		a.mail_read()
-	except Exception as e:
+	except  Exception as e:
 		print('Error-',e)
+		if 'chrome not reachable' in str(e):
+			chrome()
+
 		try:
 			a.logs("","","","","","","","","","",e)
-		except:
+		except :
 			pass
 
 
