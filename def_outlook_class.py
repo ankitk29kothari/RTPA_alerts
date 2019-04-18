@@ -151,7 +151,7 @@ class outlook:
 		time.sleep(5)
 		html_source = driver.page_source
 		if incident_no in html_source:
-			print(Dulicate)
+			print('Duplicate')
 			return ("Duplicate")
 		driver.get("https://tt-gateway5.orange-business.com/serviceApi/qa/index.html")
 		WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, '//*[@data-ng-options="rtpaService as rtpaService.serviceName for rtpaService in rtpaServiceList track by rtpaService.serviceId"]')))
@@ -269,6 +269,8 @@ class outlook:
 						country=self.country(country)
 						#print('Country - ',country)
 						check=" "
+						message2.Unread = False
+
 
 						try:
 							self.logs(status,incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step,check)
@@ -280,19 +282,25 @@ class outlook:
 							
 							check=self.rtpa_new(incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step)
 							if (check == "Submit") or (check=='Duplicate'):
-								message2.Unread = False
+								message2.Categories = 'Green Category'
+								message2.Save()
+								
 								self.logs(status,incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step,check)
 
 						elif (status=='updated'):
 							check=self.rtpa_updated(incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step)
 							if (check == "Submit"):
-								message2.Unread = False
+								message2.Categories = 'Yellow Category'
+								message2.Save()
+								
 								self.logs(status,incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step,check)
 
 						elif (status=='finished'):
 							check=self.rtpa_finished(incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step)
 							if (check == "Submit"):
-								message2.Unread = False
+								message2.Categories = 'Blue Category'
+								message2.Save()
+								
 								self.logs(status,incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step,check)
 
 						
@@ -352,7 +360,8 @@ chrome()
 while True:
 	time.sleep(5)
 	#if __name__ == '__main__':
-	a=outlook(9)
+	a=outlook('gsk.rtpa')
+	# In outlook create gsk.rtpa folder and make rule to move mail from gsk to this folder.
 	try:
 		a.mail_read()
 	except Exception as e:
