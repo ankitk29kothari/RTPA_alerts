@@ -57,7 +57,7 @@ class outlook:
 		global rtpa_type
 		
 		values1_dict={'AP':'Wireless','WLC':'Wireless','SWITCH':'LAN','LAN':'LAN','IP':'WAN','STEELHEAD':"WAN Optimization",'Riverbed':'WAN Optimization','LINK':'WAN','Perofrmance':'Performance Issue','Bandwidth':'WAN'
-		               ,'CALLS':'WAN','DATA ':'WAN'}
+		               ,'CALLS':'WAN','DATA ':'WAN','PACKET': 'LAN/WAN'}
 		values2_dict={'low':'Yellow','Medium':'Orange','High':'Red'}
 
 
@@ -193,7 +193,7 @@ class outlook:
 					
 		d_rtpa_type.select_by_visible_text(rtpa_type)
 		d_rtpa_impact.send_keys('['+incident_no+'] '+impact)
-		time.sleep(2)
+		time.sleep(3)
 		submit = driver.find_element_by_xpath('//*[@type="submit"]')
 		submit.click()
 		time.sleep(5)
