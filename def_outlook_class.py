@@ -217,7 +217,7 @@ class outlook:
 		for account in accounts:
 			global inbox
 			inbox = outlook.Folders(account.DeliveryStore.DisplayName)
-			print(account.DisplayName)
+			print(account.DisplayName ,'Time :', datetime.datetime.now())
 			folders = inbox.Folders
 			messages = folders[self.folder].Items
 			for message2 in messages:
@@ -396,7 +396,7 @@ chrome()
 #rtpa_tool(1,2,"LAN","SWAT","ORANGE","Spain","Aranda")
 
 while True:
-	time.sleep(5)
+	time.sleep(15)
 	#if __name__ == '__main__':
 	a=outlook('gsk.rtpa')
 	# In outlook create gsk.rtpa folder and make rule to move mail from gsk to this folder.
