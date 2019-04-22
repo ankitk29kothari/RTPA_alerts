@@ -196,7 +196,7 @@ class outlook:
 		time.sleep(3)
 		submit = driver.find_element_by_xpath('//*[@type="submit"]')
 		submit.click()
-		time.sleep(5)
+		time.sleep(10)
 		html_source = driver.page_source
 		if "RTPA Submitted Successfully." in html_source:
 			print ('Submit Sucess')
