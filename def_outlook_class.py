@@ -92,6 +92,9 @@ class outlook:
 			if keys.lower() in subject[4].lower():
 					layer=values
 					print("Convert: ",keys,values)
+					break
+		else:
+			layer='Others'
 
 		#Convert RTPA TYPE
 		for keys,values in values2_dict.items():
