@@ -46,6 +46,7 @@ class outlook:
 
 
 	def live_check(self):
+		#check if system is working 
 		a=str(datetime.datetime.now())
 		a=a.split(':')
 		if (a[1]=='15'):
