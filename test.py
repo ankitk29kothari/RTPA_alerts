@@ -1,5 +1,8 @@
-import datetime
-print(datetime.datetime.now())
-a=str(datetime.datetime.now())
-a=a.split(':')
-print(a[1])
+import pandas as pd
+
+a = {'Name': 'Ankit Kothari','Designation': 'AE'}
+
+#====================================
+df = pd.DataFrame(a,index=['kirti'])
+
+df.to_csv('Ankit.csv',mode='a',header=True)

@@ -33,6 +33,8 @@ class outlook:
 	def __init__(self,folder):
 		self.folder=folder
 
+	#sending logs to Email
+
 	def send_notification(self,dict):
 	 print("Sending Mail notification")
 	 outlook = win32com.client.Dispatch('outlook.application')
@@ -105,9 +107,12 @@ class outlook:
 
 
 	def logs(self,status,incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step,check):
+		
+
 		dict = {'Status': status,'Incident_no': incident_no, 'Layer': layer,'Rtpa_type': rtpa_type,'Country': country,'City': city,
 		'Logs': check,'Tittle': tittle,'Impact': impact,'Action_taken': action_taken,'Next_step': next_step }
 		self.send_notification(dict) #call mail fntn
+
 		df = pd.DataFrame(dict, index=[datetime.datetime.now()])
 		# saving the dataframe 
 		#df.to_csv('Logs.csv',mode='a')
@@ -136,7 +141,7 @@ class outlook:
 			d_layer.click()
 			time.sleep(2)
 			d_comment = driver.find_element_by_id('rtpa_incNumber')
-			d_comment.send_keys(next_step)
+			d_comment.send_keys(action_taken)
 			close_button = Select(driver.find_element_by_xpath('//*[@data-ng-model="formData.rtpaStatus"]'))
 			close_button.select_by_visible_text('Closed')
 			submit = driver.find_element_by_xpath('//*[@type="submit"]')
@@ -164,7 +169,7 @@ class outlook:
 			d_layer.click()
 			time.sleep(2)
 			d_comment = driver.find_element_by_id('rtpa_incNumber')
-			d_comment.send_keys(next_step)
+			d_comment.send_keys(action_taken)
 			submit = driver.find_element_by_xpath('//*[@type="submit"]')
 			submit.click()
 			time.sleep(5)
@@ -226,7 +231,7 @@ class outlook:
 		time.sleep(3)
 		submit = driver.find_element_by_xpath('//*[@type="submit"]')
 		submit.click()
-		time.sleep(5)
+		time.sleep(15)
 		html_source = driver.page_source
 		if "RTPA Submitted Successfully." in html_source:
 			print ('Submit Sucess')
