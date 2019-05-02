@@ -341,18 +341,19 @@ class outlook:
 
 						# Temporary
 
-						"""elif (status=='new') and (rtpa_type =='Yellow'):
+						elif (status=='new') and (rtpa_type =='Yellow'):
 							check=self.rtpa_new(incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step)
+							self.logs(status,incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step,check)
 							message2.Unread =False
 
-							if (check == "Submit"):
-								self.logs(status,incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step,check)
-								message2.Categories = 'Purple Category'
-								message2.Save()
-								check=self.rtpa_finished(incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step)
-								if (check == "Submit"):
-									self.logs(status,incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step,check)
-						"""
+							#if (check == "Submit"):
+							#	self.logs(status,incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step,check)
+							#	message2.Categories = 'Purple Category'
+							#	message2.Save()
+							#	check=self.rtpa_finished(incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step)
+							#	if (check == "Submit"):
+							#		self.logs(status,incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step,check)
+						
 
 						elif (status=='updated') or (status=='downgrade') or (status=='upgrade') :
 							check=self.rtpa_updated(incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step)
