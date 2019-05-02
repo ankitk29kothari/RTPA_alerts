@@ -340,7 +340,7 @@ class outlook:
 
 						# Temporary
 
-						elif (status=='new') and (rtpa_type =='Yellow'):
+						"""elif (status=='new') and (rtpa_type =='Yellow'):
 							check=self.rtpa_new(incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step)
 							message2.Unread =False
 
@@ -351,7 +351,7 @@ class outlook:
 								check=self.rtpa_finished(incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step)
 								if (check == "Submit"):
 									self.logs(status,incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step,check)
-						
+						"""
 
 						elif (status=='updated') or (status=='downgrade') or (status=='upgrade') :
 							check=self.rtpa_updated(incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step)
