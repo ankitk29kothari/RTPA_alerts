@@ -200,13 +200,13 @@ class outlook:
 
 
 		driver.get("https://tt-gateway5.orange-business.com/serviceApi/qa/index.html")
-		WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, '//*[@data-ng-options="rtpaService as rtpaService.serviceName for rtpaService in rtpaServiceList track by rtpaService.serviceId"]')))
-		time.sleep(4)
+		#WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, '//*[@data-ng-options="rtpaService as rtpaService.serviceName for rtpaService in rtpaServiceList track by rtpaService.serviceId"]')))
+		time.sleep(7)
 		d_title = driver.find_element_by_id('rtpa_title')
 		d_incident_no = driver.find_element_by_id('rtpa_incNumber')
 		d_rtpa_impact = driver.find_element_by_id('rtpa_impact')
-		d_layer = Select(driver.find_element_by_xpath('//*[@data-ng-options="rtpaService as rtpaService.serviceName for rtpaService in rtpaServiceList track by rtpaService.serviceId"]'))
-		d_rtpa_type = Select(driver.find_element_by_xpath('//*[@data-ng-options="rtpaType as rtpaType.rtpaTypeName for rtpaType in rtpaTypeList track by rtpaType.rtpaTypeId"]'))
+		d_layer = Select(driver.find_element_by_xpath('//*[@data-ng-model="formData.rtpaService"]'))
+		d_rtpa_type = Select(driver.find_element_by_xpath('//*[@data-ng-options="rtpaType as rtpaType.rtpaTypeName for rtpaType in filterRtpas(rtpaTypeList) track by rtpaType.rtpaTypeId"]'))
 		d_rtpa_country = Select(driver.find_element_by_xpath('//*[@data-ng-options="country as country.countryName for country in countryList track by country.countryId"]'))
 		d_rtpa_city = Select(driver.find_element_by_xpath('//*[@data-ng-options="site as site.siteName for site in siteList track by site.siteId"]'))
 
@@ -285,7 +285,7 @@ class outlook:
 						impact=str(body[5]).strip().split('\r\n')[1]
 						#print(body)
 						action_taken=str(body[6]).strip().split('\t')[1]
-						action_taken=action_taken[:300]
+						action_taken=action_taken[:1000]
 						
 						next_step=str(body[7].strip()).split('\t')[1]
 
