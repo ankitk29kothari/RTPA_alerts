@@ -285,7 +285,7 @@ class outlook:
 						impact=str(body[5]).strip().split('\r\n')[1]
 						#print(body)
 						action_taken=str(body[6]).strip().split('\t')[1]
-						action_taken=action_taken[:1000]
+						action_taken=action_taken
 						
 						next_step=str(body[7].strip()).split('\t')[1]
 
