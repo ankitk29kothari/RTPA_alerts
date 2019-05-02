@@ -337,6 +337,7 @@ class outlook:
 							
 								
 								self.logs(status,incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step,check)
+								##
 
 						# Temporary
 
