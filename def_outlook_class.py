@@ -134,7 +134,9 @@ class outlook:
 	def rtpa_finished(self,incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step):
 		self.pprint(incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step)
 		driver.get("https://tt-gateway5.orange-business.com/serviceApi/qa/history.html")
-		time.sleep(5)
+		driver.implicitly_wait(5)
+		entries = Select(driver.find_element_by_xpath('//*[@name="DataTables_Table_0_length"]'))
+		entries.select_by_visible_text('100')
 		html_source = driver.page_source
 		if incident_no in html_source:
 			d_layer = driver.find_element_by_link_text(incident_no)
@@ -162,7 +164,10 @@ class outlook:
 	def rtpa_updated(self,incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step):
 		self.pprint(incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step)
 		driver.get("https://tt-gateway5.orange-business.com/serviceApi/qa/history.html")
-		time.sleep(5)
+		
+		driver.implicitly_wait(5)
+		entries = Select(driver.find_element_by_xpath('//*[@name="DataTables_Table_0_length"]'))
+		entries.select_by_visible_text('100')
 		html_source = driver.page_source
 		if incident_no in html_source:
 			d_layer = driver.find_element_by_link_text(incident_no)
@@ -185,13 +190,17 @@ class outlook:
 	def rtpa_new(self,incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step):
 		self.pprint(incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step)
 		driver.get("https://tt-gateway5.orange-business.com/serviceApi/qa/history.html")
-		time.sleep(10)
+		driver.implicitly_wait(10)
+		entries = Select(driver.find_element_by_xpath('//*[@name="DataTables_Table_0_length"]'))
+		entries.select_by_visible_text('100')
 		html_source = driver.page_source
 		if incident_no in html_source:
 			print('Duplicate')
 			return ("Duplicate")
 		driver.get("https://tt-gateway5.orange-business.com/serviceApi/qa/history.html")
-		time.sleep(10)
+		driver.implicitly_wait(10)
+		entries = Select(driver.find_element_by_xpath('//*[@name="DataTables_Table_0_length"]'))
+		entries.select_by_visible_text('100')
 		html_source = driver.page_source
 		if incident_no in html_source:
 			print('Duplicate')
@@ -342,7 +351,7 @@ class outlook:
 						# Temporary
 
 						elif (status=='new') and (rtpa_type =='Yellow'):
-							check=self.rtpa_new(incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step)
+							
 							self.logs(status,incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step,check)
 							message2.Unread =False
 

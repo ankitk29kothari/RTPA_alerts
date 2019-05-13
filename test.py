@@ -1,8 +1,4 @@
-import pandas as pd
+from datetime import datetime
 
-a = {'Name': 'Ankit Kothari','Designation': 'AE'}
-
-#====================================
-df = pd.DataFrame(a,index=['kirti'])
-
-df.to_csv('Ankit.csv',mode='a',header=True)
+datetime_object = datetime.strptime('Jun 1 2005  1:33PM', '%b %d %Y %I:%M%p')
+print(datetime_object)
