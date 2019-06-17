@@ -9,6 +9,11 @@ install_import('selenium','selenium')
 from pip import install_import
 install_import('pandas','pandas')
 
+from pip import install_import
+install_import('requests','requests')
+
+
+
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -24,7 +29,8 @@ import re
 import pandas as pd
 import datetime
 import time
-
+import requests
+import json
 
 #===============================================================================
 
@@ -124,19 +130,43 @@ class outlook:
 		print ("Tittle- ",tittle)
 		print ("Type- ",rtpa_type)
 		print ("Impact- ",impact)
-		#print ("Action Taken- ",action_taken)
+		print ("Action Taken- ",action_taken)
 		#print ("Next Step-", next_step)
 		print ("Country- ",country)
 		print ("City- ",city)
 		print ("Layer-", layer)
 		#df.to_csv('Logs.csv',mode='a') 
 
+	def rtpa_downgrade(self,incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step):
+		
+		color_dict={'Red':2,'Orange':3,'Yellow':4}
+		for keys,values in color_dict.items():
+		
+			if (keys.lower() == rtpa_type.lower()):
+				code=values
+				break
+		self.pprint(incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step)
+		url=('https://tt-gateway5.orange-business.com/serviceApi/qa/rtpa/update?key=SHARED_KEY')
+		headers = {'Content-type': 'application/json'}
+		data= {
+                "incNumber": incident_no,
+                "rtpaTitle": tittle,
+                "rtpaType": code,
+                "impact": impact,
+                "rtpaStatus":"open"
+                }
+
+
+		r = requests.post(url, data=json.dumps(data), headers=headers)
+		print( r.status_code)
+		print (r.json())
+
+
+
 	def rtpa_finished(self,incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step):
 		self.pprint(incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step)
 		driver.get("https://tt-gateway5.orange-business.com/serviceApi/qa/history.html")
-		driver.implicitly_wait(5)
-		entries = Select(driver.find_element_by_xpath('//*[@name="DataTables_Table_0_length"]'))
-		entries.select_by_visible_text('100')
+		time.sleep(5)
 		html_source = driver.page_source
 		if incident_no in html_source:
 			d_layer = driver.find_element_by_link_text(incident_no)
@@ -164,17 +194,16 @@ class outlook:
 	def rtpa_updated(self,incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step):
 		self.pprint(incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step)
 		driver.get("https://tt-gateway5.orange-business.com/serviceApi/qa/history.html")
-		
-		driver.implicitly_wait(5)
-		entries = Select(driver.find_element_by_xpath('//*[@name="DataTables_Table_0_length"]'))
-		entries.select_by_visible_text('100')
+		time.sleep(5)
 		html_source = driver.page_source
+		driver.implicitly_wait(5)
 		if incident_no in html_source:
 			d_layer = driver.find_element_by_link_text(incident_no)
 			d_layer.click()
 			time.sleep(2)
 			d_comment = driver.find_element_by_id('rtpa_incNumber')
 			d_comment.send_keys(action_taken)
+			time.sleep(2)
 			submit = driver.find_element_by_xpath('//*[@type="submit"]')
 			submit.click()
 			time.sleep(5)
@@ -187,20 +216,17 @@ class outlook:
 
 
 
+
 	def rtpa_new(self,incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step):
 		self.pprint(incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step)
 		driver.get("https://tt-gateway5.orange-business.com/serviceApi/qa/history.html")
-		driver.implicitly_wait(10)
-		entries = Select(driver.find_element_by_xpath('//*[@name="DataTables_Table_0_length"]'))
-		entries.select_by_visible_text('100')
+		time.sleep(10)
 		html_source = driver.page_source
 		if incident_no in html_source:
 			print('Duplicate')
 			return ("Duplicate")
 		driver.get("https://tt-gateway5.orange-business.com/serviceApi/qa/history.html")
-		driver.implicitly_wait(10)
-		entries = Select(driver.find_element_by_xpath('//*[@name="DataTables_Table_0_length"]'))
-		entries.select_by_visible_text('100')
+		time.sleep(10)
 		html_source = driver.page_source
 		if incident_no in html_source:
 			print('Duplicate')
@@ -364,7 +390,7 @@ class outlook:
 							#		self.logs(status,incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step,check)
 						
 
-						elif (status=='updated') or (status=='downgrade') or (status=='upgrade') :
+						elif (status=='updated') :
 							check=self.rtpa_updated(incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step)
 							message2.Unread = False
 							if (check == "Submit"):
@@ -373,6 +399,11 @@ class outlook:
 							
 								
 								self.logs(status,incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step,check)
+
+						elif (status=='downgrade') or (status=='upgrade') :
+							check=self.rtpa_downgrade(incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step)
+							message2.Unread = False
+							self.logs(status,incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step,check)
 
 						elif (status=='finished'):
 							check=self.rtpa_finished(incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step)
@@ -440,7 +471,7 @@ def chrome():
 chrome()
 
 
-
+'''na'''
 
 while True:
 	time.sleep(30)
