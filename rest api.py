@@ -7,7 +7,7 @@ headers = {'Content-type': 'application/json'}
 
 
 data= {
-"emailId":"pooja.garg@orange.com",
+"emailId":"test.1@orange.com",
 "password":"smile@123"
 }
 

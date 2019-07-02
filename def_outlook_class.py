@@ -13,6 +13,10 @@ from pip import install_import
 install_import('requests','requests')
 
 
+from mariadb_write import ticket_create ,ticket_update
+
+
+
 
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
@@ -363,6 +367,7 @@ class outlook:
 
 
 						if (status=='new') and (rtpa_type !='Yellow'):
+							ticket_create(incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step)
 							
 							check=self.rtpa_new(incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step)
 							message2.Unread =False
@@ -379,20 +384,17 @@ class outlook:
 						elif (status=='new') and (rtpa_type =='Yellow'):
 							
 							self.logs(status,incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step,check)
+							ticket_create(incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step)
 							message2.Unread =False
 
-							#if (check == "Submit"):
-							#	self.logs(status,incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step,check)
-							#	message2.Categories = 'Purple Category'
-							#	message2.Save()
-							#	check=self.rtpa_finished(incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step)
-							#	if (check == "Submit"):
-							#		self.logs(status,incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step,check)
+							
+							
 						
 
 						elif (status=='updated') :
 							check=self.rtpa_updated(incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step)
 							message2.Unread = False
+							ticket_update(incident_no,action_taken)
 							if (check == "Submit"):
 								message2.Categories = 'Yellow Category'
 								message2.Save()
@@ -412,6 +414,8 @@ class outlook:
 								message2.Categories = 'Blue Category'
 								message2.Save()
 								self.logs(status,incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step,check)
+						
+
 						
 
 
