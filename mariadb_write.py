@@ -102,3 +102,36 @@ def ticket_update(incident_no,action_taken):
 	result = conn.execute(ins,values_list)
 
 
+
+ 
+def ticket_close(incident_no):
+	meta = MetaData()
+	ticket = Table(
+   'ticket', meta, 
+
+   Column('sid', Integer, primary_key = True), 
+   Column('incident_no', String(255)), 
+   Column('status', String(255)),
+   Column('stype', String(255)),  
+ 
+)
+	conn = engine.connect()
+	stmt=ticket.update().where(ticket.c.incident_no==incident_no).values(status='Closed')
+	conn.execute(stmt)
+
+
+def ticket_downgrade(incident_no,stype):
+	meta = MetaData()
+	ticket = Table(
+   'ticket', meta, 
+
+   Column('sid', Integer, primary_key = True), 
+   Column('incident_no', String(255)), 
+   Column('status', String(255)),
+   Column('stype', String(255)),  
+ 
+)
+	conn = engine.connect()
+	stmt=ticket.update().where(ticket.c.incident_no==incident_no).values(stype=stype)
+	conn.execute(stmt)
+
