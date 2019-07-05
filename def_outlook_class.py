@@ -13,7 +13,7 @@ from pip import install_import
 install_import('requests','requests')
 
 
-from mariadb_write import ticket_create ,ticket_update
+from mariadb_write import ticket_create ,ticket_update,ticket_close,ticket_downgrade
 
 
 
@@ -403,7 +403,7 @@ class outlook:
 								self.logs(status,incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step,check)
 
 						elif (status=='downgrade') or (status=='upgrade') :
-							ef ticket_downgrade(incident_no,rtpa_type):
+							ticket_downgrade(incident_no,rtpa_type)
 							check=self.rtpa_downgrade(incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step)
 							message2.Unread = False
 							self.logs(status,incident_no,tittle,layer,rtpa_type,impact,country,city,action_taken,next_step,check)
